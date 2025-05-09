@@ -1,10 +1,10 @@
 import './App.css';
-import Register from './components/Register';
+import Shipping from './components/Shipping';
 
 function App() {
   return (
     <div>
-      <Register />
+      <Shipping />
     </div>
   );
 }

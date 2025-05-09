@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { get_product, insert_product, insertfile } from '../api/BikeyApi';
 
 const Register = () => {
@@ -40,7 +40,7 @@ const Register = () => {
 
     return (
         <div>
-            <table>
+            <table border={"1"}>
                 <tr>
                     <th>구분</th>
                     <th>쇼핑몰에 등록된 이름</th>

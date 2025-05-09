@@ -25,3 +25,13 @@ export const get_product = async () => {
     const response = await axios.get(`${HOST}/getProductAll`);
     return response.data;
 }
+
+export const returnBikey = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("password", "1234");
+    const response = await axios.post(`${HOST}/excelupload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data
+}
