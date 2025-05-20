@@ -57,7 +57,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJWT(username, role, 60 * 60 * 10L);
+        String token = jwtUtil.createJWT(username, role, 1000 * 60 * 30L);
         response.addHeader("Authorization", "Bearer " + token);
     }
 
@@ -65,7 +65,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException failed) throws IOException, ServletException {
 
-        // 401 권한 없음 응답 코드 전송
+        // 401 응답 코드 전송
         response.setStatus(401);
     }
 }
