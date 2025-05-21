@@ -10,7 +10,8 @@ const Login = () => {
     const login = (e) => {
         e.preventDefault();
 
-        toLogin(id, pw)
+        const login = toLogin(id, pw);
+        console.log(login)
 
         // 로그인 성공 시 홈으로 이동
         navigate('/');
