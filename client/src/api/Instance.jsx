@@ -17,11 +17,19 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(
     res => res,
     error => {
-        if (error.response && error.response.status === 401) {
-            localStorage.clear();
-            window.location.href = '/';
-            return Promise.reject(error);
+        if (error.response) {
+            const status = error.response.status;
+            const data = error.response.data;
+
+            if (
+                status === 401
+                // && data?.error?.toLowerCase().includes('expired')
+            ) {
+                alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+                window.location.href = '/login';
+            }
         }
+        return Promise.reject(error);
     }
 )
 

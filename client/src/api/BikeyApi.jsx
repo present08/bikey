@@ -64,13 +64,13 @@ export const toLogin = async (id, pw) => {
     try {
         const formData = new FormData();
         formData.append("username", id);
-        formData.append("password", 1234);
+        formData.append("password", pw);
         const res = await axios.post(`${HOST}/login`, formData);
         const token = res.headers.get('Authorization');
         localStorage.setItem('token', token);
         const payload = JSON.parse(atob(token.split('.')[1]));
         localStorage.setItem('role', payload.role);
-        return res
+        return token
     } catch (error) {
         console.log(error)
         alert("아이디 또는 비밀번호가 잘못되었습니다.")

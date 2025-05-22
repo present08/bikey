@@ -1,12 +1,14 @@
-import { Outlet } from "react-router-dom"
-import Nav from "./Nav"
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import Nav from "./Nav";
 
 const Layout = () => {
+    const [token, setToken] = useState(null);
     return (
         <div>
-            <Nav />
+            <Nav token={token} setToken={setToken} />
             <div>
-                <Outlet />
+                <Outlet context={{ token, setToken }} />
             </div>
         </div>
     )

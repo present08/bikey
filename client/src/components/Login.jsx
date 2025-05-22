@@ -1,19 +1,21 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { toLogin } from './../api/BikeyApi';
 
 const Login = () => {
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
     const navigate = useNavigate();
+    const { setToken } = useOutletContext();
 
     const login = (e) => {
         e.preventDefault();
 
-        const login = toLogin(id, pw);
-        console.log(login)
+        const token = toLogin(id, pw);
+        setToken(token);
 
         // 로그인 성공 시 홈으로 이동
+        alert("안녕하세요.")
         navigate('/');
     };
 
@@ -22,7 +24,7 @@ const Login = () => {
             <h2>로그인</h2>
             <form onSubmit={login}>
                 <div>
-                    <label>이메일: </label>
+                    <label>아이디: </label>
                     <input
                         type="id"
                         value={id}
