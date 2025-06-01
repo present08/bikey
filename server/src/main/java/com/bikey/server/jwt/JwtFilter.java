@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bikey.server.dto.CustomUserDetails;
-import com.bikey.server.model.User;
+import com.bikey.server.model.BikeyUser;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -58,7 +58,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 
-        User user = new User();
+        BikeyUser user = new BikeyUser();
         user.setUsername(username);
         user.setPassword("tempPw"); // DB를 수시로 체크하기 때문에 임시 비밀번호 설정
         user.setRole(role);

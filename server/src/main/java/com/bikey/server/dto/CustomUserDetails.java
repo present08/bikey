@@ -6,13 +6,13 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.bikey.server.model.User;
+import com.bikey.server.model.BikeyUser;
 
 public class CustomUserDetails implements UserDetails {
 
-    private final User user;
+    private final BikeyUser user;
 
-    public CustomUserDetails(User user) {
+    public CustomUserDetails(BikeyUser user) {
         this.user = user;
     }
 

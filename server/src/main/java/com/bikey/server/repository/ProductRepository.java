@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.bikey.server.model.Product;
+import com.bikey.server.model.BikeyProduct;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<BikeyProduct, Long> {
     @Query("SELECT product_name FROM Product where division = :param")
     List<String> findByProductName(@Param("param") String param);
 
