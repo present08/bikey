@@ -46,7 +46,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+        // security cors설정
         http
                 .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
 
@@ -73,12 +73,18 @@ public class SecurityConfig {
         http.formLogin(auth -> auth.disable());
         http.httpBasic(auth -> auth.disable());
 
+        // login, /, join의 권한은 모든권한
+        // /admin을 통한 접근은 ADMIN의 Role을 가진자만 접근할 수 있도록 설정
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/", "/join").permitAll()
+                // Spring security에서 hasRole은 "ROLE_"이 prefix된다. -> ADMIN으로 설정할경우 실제 값은
+                // ROLE_ADMIN이 된다.
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
+        // LoginFilter 이전에 filter를 생성
         http.addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
 
+        // UsernamePasswordAuthenticationFilter의 위치에 커스텀 된 LoginFilter를 대신 사용
         http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
                 UsernamePasswordAuthenticationFilter.class);
 
