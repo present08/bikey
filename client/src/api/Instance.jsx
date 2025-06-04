@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: '/api',
 });
 
 // 요청 보낼 때 인터셉트 후 토큰을 헤더에 넣어 보냄

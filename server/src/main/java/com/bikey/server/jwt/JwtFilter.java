@@ -35,7 +35,6 @@ public class JwtFilter extends OncePerRequestFilter {
         // authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {
 
-            System.out.println("doFilter Token null");
             // 비정상일 경우 다음 필터로 데이터를 넘겨줌
             filterChain.doFilter(request, response);
 

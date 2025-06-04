@@ -1,7 +1,7 @@
 import axios from "axios";
 import axiosInstance from "./Instance";
 
-const HOST = "http://localhost:8080"
+const HOST = "/api"
 
 // DB 매핑 리스트 업데이트(한개)
 export const insert_product = async (division, productName, transName) => {
