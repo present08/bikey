@@ -67,7 +67,7 @@ export const toLogin = async (id, pw) => {
         const formData = new FormData();
         formData.append("username", id);
         formData.append("password", pw);
-        const res = await axios.post(`/login`, formData);
+        const res = await axios.post(`${HOST}/login`, formData);
         const token = res.headers.get('Authorization');
         localStorage.setItem('token', token);
         const payload = JSON.parse(atob(token.split('.')[1]));
