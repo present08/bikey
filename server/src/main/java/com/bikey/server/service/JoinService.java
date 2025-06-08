@@ -4,7 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bikey.server.dto.JoinDTO;
-import com.bikey.server.model.BikeyUser;
+import com.bikey.server.model.User;
 import com.bikey.server.repository.UserRepository;
 
 @Service
@@ -29,7 +29,7 @@ public class JoinService {
             return;
         }
 
-        BikeyUser data = new BikeyUser();
+        User data = new User();
         data.setUsername(username);
         data.setPassword(bCryptPasswordEncoder.encode(password));
         data.setName(name);

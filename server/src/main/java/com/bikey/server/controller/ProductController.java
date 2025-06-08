@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bikey.server.model.BikeyProduct;
+import com.bikey.server.model.Product;
 import com.bikey.server.repository.ProductRepository;
 import com.bikey.server.service.ProductService;
 
@@ -42,7 +42,7 @@ public class ProductController {
     }
 
     @GetMapping("/getProductAll")
-    public List<BikeyProduct> getMethodName() {
+    public List<Product> getMethodName() {
         return productRepository.findAll();
     }
 }

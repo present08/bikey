@@ -75,7 +75,7 @@ public class SecurityConfig {
 
         // login, /, join의 권한은 모든권한
         // /admin을 통한 접근은 ADMIN의 Role을 가진자만 접근할 수 있도록 설정
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/api/login", "/api/", "/api/join").permitAll()
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/api/login", "/api", "/api/join").permitAll()
                 // Spring security에서 hasRole은 "ROLE_"이 prefix된다. -> ADMIN으로 설정할경우 실제 값은
                 // ROLE_ADMIN이 된다.
                 .requestMatchers("/admin/**").hasRole("ADMIN")

@@ -153,7 +153,7 @@ public class BikeyService {
                     order.setPhone(phone);
                     order.setOrder_num(Long.parseLong(orderNum));
                     order.setDivision(model_option_div);
-                    order.setOrder_date(orderDate);
+                    order.setOrderDate(orderDate);
                     if (model_option_div == "화물") {
                         order.setModel(product_name);
                         order.setModel_option(color_name + assembly);

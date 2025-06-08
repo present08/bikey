@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.bikey.server.dto.CustomUserDetails;
-import com.bikey.server.model.BikeyUser;
+import com.bikey.server.model.User;
 import com.bikey.server.repository.UserRepository;
 
 @Service
@@ -20,7 +20,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        BikeyUser userData = userRepository.findByUsername(username);
+        User userData = userRepository.findByUsername(username);
         System.out.println("User service " + userData);
         if (userData != null) {
             return new CustomUserDetails(userData);
