@@ -35,6 +35,7 @@ public class JwtUtil {
 
     // 만료시간 검증
     public Boolean isExpire(String token) {
+        System.out.println("Token 시간 만료");
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration()
                 .before(new Date());
     }

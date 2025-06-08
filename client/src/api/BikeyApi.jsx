@@ -1,7 +1,9 @@
 import axios from "axios";
 import axiosInstance from "./Instance";
+import { DEVHOST } from "./develop";
 
 const HOST = "/api"
+const DEV_HOST = DEVHOST;
 
 // DB 매핑 리스트 업데이트(한개)
 export const insert_product = async (division, productName, transName) => {
