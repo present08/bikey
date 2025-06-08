@@ -9,15 +9,15 @@ import org.springframework.data.repository.query.Param;
 import com.bikey.server.model.BikeyProduct;
 
 public interface ProductRepository extends JpaRepository<BikeyProduct, Long> {
-    @Query("SELECT productName FROM BikeyProduct where division = :param")
+    @Query("SELECT p.productName FROM BikeyProduct p where p.division = :param")
     List<String> findByProductName(@Param("param") String param);
 
-    @Query("SELECT transName FROM BikeyProduct where division = :param")
+    @Query("SELECT p.transName FROM BikeyProduct p where p.division = :param")
     List<String> findByProductTransName(@Param("param") String param);
 
-    @Query("SELECT productName FROM BikeyProduct where division IN :param")
+    @Query("SELECT p.productName FROM BikeyProduct p where p.division IN :param")
     List<String> findByListProductName(@Param("param") List<String> param);
 
-    @Query("SELECT transName FROM BikeyProduct where division IN :param")
+    @Query("SELECT p.transName FROM BikeyProduct p where p.division IN :param")
     List<String> findByListProductTranName(@Param("param") List<String> param);
 }
