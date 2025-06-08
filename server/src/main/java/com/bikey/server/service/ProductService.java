@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bikey.server.model.Product;
+import com.bikey.server.model.BikeyProduct;
 import com.bikey.server.repository.ProductRepository;
 
 @Service
@@ -20,11 +20,11 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Product register(Map<String, String> resiData) {
-        Product product = new Product();
+    public BikeyProduct register(Map<String, String> resiData) {
+        BikeyProduct product = new BikeyProduct();
         product.setDivision(resiData.get("division").replace(" ", ""));
-        product.setProduct_name(resiData.get("productName").replace(" ", ""));
-        product.setTrans_name(resiData.get("transName").replace(" ", ""));
+        product.setProductName(resiData.get("productName").replace(" ", ""));
+        product.setTransName(resiData.get("transName").replace(" ", ""));
         productRepository.save(product);
         return product;
     }
@@ -42,10 +42,10 @@ public class ProductService {
                 String divText = divCell.getStringCellValue().replace(" ", "");
                 String p_nameText = p_nameCell.getStringCellValue().replace(" ", "");
                 String t_nameText = t_nameCell.getStringCellValue().replace(" ", "");
-                Product product = new Product();
+                BikeyProduct product = new BikeyProduct();
                 product.setDivision(divText);
-                product.setProduct_name(p_nameText);
-                product.setTrans_name(t_nameText);
+                product.setProductName(p_nameText);
+                product.setTransName(t_nameText);
                 productRepository.save(product);
             }
             return "등록완료";

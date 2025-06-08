@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./client
+    ports:
+      - "4000:80"
+    container_name: react_app
+    networks:
+      - app_network
+  backend:
+    build:
+      context: ./server
+    ports:
+      - "8090:8080"
+    container_name: spring_app
+    networks:
+      - app_network
+  nginx:
+    image: nginx:latest
+    ports:
+      - "3002:80"

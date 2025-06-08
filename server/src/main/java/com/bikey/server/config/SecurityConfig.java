@@ -55,7 +55,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://43.201.209.78:4000"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://43.201.209.78:3002"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
@@ -75,7 +75,7 @@ public class SecurityConfig {
 
         // login, /, join의 권한은 모든권한
         // /admin을 통한 접근은 ADMIN의 Role을 가진자만 접근할 수 있도록 설정
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/", "/join").permitAll()
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/api/login", "/api", "/api/join").permitAll()
                 // Spring security에서 hasRole은 "ROLE_"이 prefix된다. -> ADMIN으로 설정할경우 실제 값은
                 // ROLE_ADMIN이 된다.
                 .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -85,8 +85,13 @@ public class SecurityConfig {
         http.addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
 
         // UsernamePasswordAuthenticationFilter의 위치에 커스텀 된 LoginFilter를 대신 사용
-        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
-                UsernamePasswordAuthenticationFilter.class);
+        LoginFilter loginFilter = new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil);
+        loginFilter.setFilterProcessesUrl("/api/login");
+
+        http.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
+        // http.addFilterAt(new
+        // LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
+        // UsernamePasswordAuthenticationFilter.class);
 
         // 세션을 STATELESS상태로 관리
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

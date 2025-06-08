@@ -8,11 +8,11 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Product {
+public class BikeyProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String division;
-    private String product_name;
-    private String trans_name;
+    private String productName;
+    private String transName;
 }

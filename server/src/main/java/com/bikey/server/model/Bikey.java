@@ -25,11 +25,11 @@ public class Bikey {
     private String model_option = "";
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate order_date;
+    private LocalDate orderDate;
 
-    private boolean complete_state = false;
+    private boolean completeState = false;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate completion_date;
+    private LocalDate completionDate;
 
 }
