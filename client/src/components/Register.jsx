@@ -60,8 +60,8 @@ const Register = () => {
                     productList.map(product => (
                         <tr key={product.id}>
                             <td>{product.division}</td>
-                            <td>{product.product_name}</td>
-                            <td>{product.trans_name}</td>
+                            <td>{product.productName}</td>
+                            <td>{product.transName}</td>
                         </tr>
                     ))
                 ) : (

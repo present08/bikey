@@ -50,12 +50,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // 토큰 시간 검증하기
         if (jwtUtil.isExpire(token)) {
-            System.out.println("Token Expired");
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"JWT token expired\"}");
             return;
+            // filterChain.doFilter(request, response);
+            // return;
         }
 
-        //
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 

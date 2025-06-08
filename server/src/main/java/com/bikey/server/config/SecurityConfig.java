@@ -1,5 +1,6 @@
 package com.bikey.server.config;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
@@ -55,7 +56,10 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://43.201.209.78:3002"));
+                        // configuration.setAllowedOrigins(
+                        // Collections.singletonList("http://43.201.209.78:3002"));
+                        configuration.setAllowedOrigins(
+                                Arrays.asList("http://43.201.209.78:3002", "http://localhost:3000"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));

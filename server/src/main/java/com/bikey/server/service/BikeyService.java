@@ -19,13 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bikey.server.model.Bikey;
-import com.bikey.server.repository.BikeyRepository;
 import com.bikey.server.repository.ProductRepository;
 
 @Service
 public class BikeyService {
-    @Autowired
-    private BikeyRepository bikeyRepository;
     @Autowired
     private ProductRepository productRepository;
 
@@ -53,13 +50,17 @@ public class BikeyService {
             Sheet sheet = workbook.getSheetAt(0);
             List<Bikey> result = new ArrayList<>();
 
-            List<String> productList = productRepository.findByProductName("자전거");
-            List<String> productTrnasList = productRepository.findByProductTransName("자전거");
-            List<String> productDivList = productRepository.findByProductName("제품군");
-            List<String> modelDivList = productRepository.findByProductName("모델");
-            List<String> colorList = productRepository.findByProductName("색상");
-            List<String> optionList = productRepository.findByListProductName(List.of("옵션", "용품", "부품"));
-            List<String> optionTrnasList = productRepository.findByListProductTranName(List.of("옵션", "용품", "부품"));
+            List<String> bikeList = productRepository.findByProductName("자전거");
+            List<String> productList = productRepository.findByListProductName(List.of("자전거", "용품"));
+            List<String> productTransList = productRepository.findByListProductTranName(List.of("자전거", "용품"));
+            List<String> productResearchList = productRepository.findByProductName("제품군");
+            List<String> optionList = productRepository.findByListProductName(List.of("필수옵션", "선택옵션"));
+            List<String> optionTransList = productRepository.findByListProductTranName(List.of("필수옵션", "선택옵션"));
+
+            // List<String> allProductList = productRepository.findAllByProductName();
+            // List<String> allTransList = productRepository.findAllByTransName();
+            System.out.println("옵션 리스트1 길이 : " + optionList.size());
+            System.out.println("옵션 리스트2 길이 : " + optionTransList.size());
 
             for (int i = 2, idx = 0; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
@@ -70,96 +71,79 @@ public class BikeyService {
                 Cell orderNumCell = row.getCell(15); // P열
                 Cell orderDateCell = row.getCell(22); // W열
 
-                // if (nameCell == null || phoneCell == null || modelCell == null)
-                // continue;
-                // if (nameCell.getCellType() != CellType.STRING || phoneCell.getCellType() !=
-                // CellType.STRING
-                // || modelCell.getCellType() != CellType.STRING)
-                // continue;
-
                 String name = nameCell.getStringCellValue().replace(" ", "");
                 String phone = phoneCell.getStringCellValue().replace(" ", "");
                 String model = modelCell.getStringCellValue().replace(" ", "");
                 String option = optionCell.getStringCellValue().replace(" ", "");
                 String orderNum = orderNumCell.getStringCellValue().replace(" ", "");
                 LocalDate orderDate = orderDateCell.getLocalDateTimeCellValue().toLocalDate();
-                // String model_option_div = productDivList.stream()
-                // .anyMatch(model::equals) ? "화물" : "용품";
-                String model_option_div = productList.stream()
-                        .anyMatch(model::equals) ? "화물" : "용품";
+
+                // 화물 구분
+                String delivery = bikeList.stream().anyMatch(model::equals) ? "화물" : "용품";
+                System.out.println("구분 : " + delivery);
 
                 // 모델 분류
                 int matched_product_idx = productList.indexOf(model);
-                // product이름을 담을 변수 설정
                 String product_name = "";
+
+                // 제품리스트에 매칭이 있을 경우 변환 리스트에 맞는 값 리턴
                 if (matched_product_idx != -1) {
-                    // 모델명 입력
-                    product_name = productTrnasList.get(matched_product_idx);
-
-                    // 옵션에 모델명이 있는 경우 재검색
-                    String research_product = productDivList.stream()
-                            .filter(option::contains)
-                            .max(Comparator.comparingInt(String::length))
-                            .orElse("");
-                    if (research_product != "") {
-                        String research_model = modelDivList.stream()
-                                .filter(option::contains)
-                                .max(Comparator.comparingInt(String::length))
-                                .orElse("");
-                        product_name = research_product + research_model;
-                    }
+                    product_name = productTransList.get(matched_product_idx);
+                    System.out.println("선택된 제품명 : " + product_name);
                 }
-
                 // 옵션 분류
                 int matched_option_idx = optionList.indexOf(option);
-                System.out.println(matched_option_idx + option);
+                System.out.println("Option Num: " + matched_option_idx + ", Option Name: " + option);
                 String option_name = "";
+
+                // 옵션리스트에 매칭이 있을 경우 변환 리스트에 맞는 값 리턴
                 if (matched_option_idx != -1) {
-                    option_name = optionTrnasList.get(matched_option_idx);
+                    option_name = optionTransList.get(matched_option_idx);
+                    System.out.println("선택된 옵션 : " + option_name);
                 }
 
-                String color_name = "";
-                // 옵션 분류 ( 색상 )
-                if (product_name != "") {
-                    String color_matched = colorList.stream()
-                            .filter(option::contains)
-                            .max(Comparator.comparingInt(String::length))
-                            .orElse("");
-                    color_name = color_matched;
-                }
+                String research_product = productResearchList.stream()
+                        .filter(option_name::contains)
+                        .max(Comparator.comparingInt(String::length))
+                        .orElse("");
+                System.out.println("재검색: " + research_product);
 
-                String assembly = "";
-                // 옵션 분류 ( 조립 )
-                if (option.contains("완조립")) {
-                    assembly = "/완";
-                } else if (option.contains("반조립")) {
-                    assembly = "/반";
+                if (research_product != "" && delivery == "화물") {
+                    product_name = option_name;
+                    option_name = "";
                 }
 
                 // 이 if문에는 추가만 하는거야
                 if (result.size() > 0 && result.get(idx - 1).getOrder_num() == Long.parseLong(orderNum)) {
+                    System.out.println("Result Size: " + result.size() + ", 주문번호가 이전과 동일 " + Long.parseLong(orderNum));
                     Bikey prev_bikey = result.get(idx - 1);
-                    if (model_option_div == "화물") {
-                        prev_bikey.setDivision(model_option_div);
-                        prev_bikey.setModel(product_name);
-                        prev_bikey.setModel_option(color_name + assembly + "/" + prev_bikey.getModel_option());
+                    System.out.println("제품 명이 뭘까요 : " + product_name);
+                    prev_bikey.setModel(product_name);
+
+                    if (delivery == "화물") {
+                        prev_bikey.setDivision(delivery);
+                        prev_bikey.setModel_option(prev_bikey.getModel_option());
+                        System.out.println("화물 택배: " + prev_bikey);
                     } else {
-                        prev_bikey.setModel_option(prev_bikey.getModel_option() + "/" + option_name);
+                        if (prev_bikey.getModel_option() != "") {
+                            prev_bikey.setModel_option(prev_bikey.getModel_option() + "/" + option_name);
+                        } else {
+                            prev_bikey.setModel_option(option_name);
+                        }
+                        System.out.println("용품 택배: " + prev_bikey);
                     }
                 } else {
+                    System.out.println("Result Size: " + result.size() + ", 새로운 주문번호: " + Long.parseLong(orderNum));
                     Bikey order = new Bikey();
 
                     order.setName(name);
                     order.setPhone(phone);
                     order.setOrder_num(Long.parseLong(orderNum));
-                    order.setDivision(model_option_div);
+                    order.setDivision(delivery);
                     order.setOrderDate(orderDate);
-                    if (model_option_div == "화물") {
-                        order.setModel(product_name);
-                        order.setModel_option(color_name + assembly);
-                    } else {
-                        order.setModel_option(option_name);
-                    }
+                    order.setModel(product_name);
+                    order.setModel_option(option_name);
+                    System.out.println(order);
 
                     result.add(order);
                     idx++;

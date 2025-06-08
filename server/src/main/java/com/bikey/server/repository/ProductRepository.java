@@ -20,4 +20,10 @@ public interface ProductRepository extends JpaRepository<BikeyProduct, Long> {
 
     @Query("SELECT p.transName FROM BikeyProduct p where p.division IN :param")
     List<String> findByListProductTranName(@Param("param") List<String> param);
+
+    @Query("SELECT p.productName FROM BikeyProduct p")
+    List<String> findAllByProductName();
+
+    @Query("SELECT p.transName FROM BikeyProduct p")
+    List<String> findAllByTransName();
 }
